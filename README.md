@@ -1,1 +1,1 @@
-# threads_middleware_paralelismo
+# Implementation an aplication with Threads, Middlewware e Paralelismo
