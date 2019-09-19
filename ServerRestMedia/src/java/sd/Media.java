@@ -8,6 +8,9 @@ package sd;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
@@ -53,6 +56,12 @@ public class Media {
         for(Object key : matrix.entrySet()){
             result += Float.valueOf(key.toString().split("=")[0]);
         }
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Media.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println(String.valueOf(result/matrix.size()));
         return String.valueOf(result/matrix.size());
     }
     
