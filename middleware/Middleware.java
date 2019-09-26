@@ -52,11 +52,29 @@ public class Middleware{
                 System.out.println("Mensage from client: "+b);
                 
                 // send to servers (RESTFUL)
-                Thread t1 = new Thread( getMedia(b));
+                // Thread t1 = new Thread( getMedia(b));
                 
-                String resultMedia = getMedia(b);
-                String resultMediana = getMediana(b);
+                // String resultMedia = getMedia(b);
+                // String resultMediana = getMediana(b);
 
+                ConnectMedia cm = new ConnectMedia(b);
+                COnnectMediana com = new COnnectMediana(b);
+
+                System.out.println("Iniciando threads");
+                cm.start();
+                com.start();
+
+                try {
+                    System.out.println("Esperando respostas");
+                    cm.join();
+                    com.join();
+                } catch (Exception e) {
+                    //TODO: handle exception
+                }
+
+                System.out.println("Threads terminadas");
+                String resultMedia = cm.getMedia();
+                String resultMediana = com.getResposta();
                 // send to client
                 BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
                 bw.write(resultMedia+";"+resultMediana);
@@ -72,7 +90,7 @@ public class Middleware{
     public String getMedia(String dados){
         try {
             // String URL_MEDIA = "http://localhost:8080/ServerRestMedia/webresources/media/pegar/12345;3;5;6;8;9;12;15;16";
-            String URL_MEDIA = "http://localhost:8080/ServerRestMedia/webresources/media/pegar/12345;"+dados;
+            String URL_MEDIA = "http://192.168.43.85:8080/ServerRestMedia/webresources/media/pegar/12345;"+dados;
             URL obj = new URL(URL_MEDIA);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
@@ -102,7 +120,7 @@ public class Middleware{
     public String getMediana(String dados){
         try {
             // String URL_MEDIA = "http://10.0.0.104:8080/ServerMediana/webresources/mediana/pegar/12345;3;5;6;8;9;12;15;16";
-            String URL_MEDIA = "http://10.0.0.104:8080/ServerMediana/webresources/mediana/pegar/12345;"+dados;
+            String URL_MEDIA = "http://192.168.43.134:8080/ServerMediana/webresources/mediana/pegar/12345;"+dados;
             URL obj = new URL(URL_MEDIA);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
